@@ -1,3 +1,18 @@
+terraform{
+    required_providers {
+        aws = {
+            source = "hasicorp/aws"
+        }
+    }
+}
+
+provider "aws" { 
+    region = sa-east-1
+}
+
+# IAM
+
+
 # SNS
 resource "aws_sns_topic" "tickets"{
     name = "zendesk-tickets-topic"   
