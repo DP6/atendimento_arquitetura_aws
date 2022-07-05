@@ -7,7 +7,7 @@ terraform{
 }
 
 provider "aws" { 
-    region = sa-east-1
+    region = "sa-east-1"
 }
 
 # IAM
@@ -28,18 +28,18 @@ resource "aws_sqs_queue" "tickets_queue" {
 resource "aws_sns_topic_subscription" "tickets_queue_to_topic" {
     topic_arn = aws_sns_topic.tickets.arn
     protocol = "sqs"
-    endponit = aws_sqs_queue.tickets_queue.arn
+    endpoint = aws_sqs_queue.tickets_queue.arn
 }
 
 # S3
 resource "aws_s3_bucket" "s3_bucket_raw"{
-    name = "atendimento-tickets-raw"
+    bucket = "atendimento-tickets-raw"
 }
 
 resource "aws_s3_bucket" "s3_bucket_processed"{
-    name = "atendimento-tickets-processed"
+    bucket = "atendimento-tickets-processed"
 }
 
 resource "aws_s3_bucket" "s3_bucket_curated"{
-    name = "atendimento-tickets-curated"
+    bucket = "atendimento-tickets-curated"
 }
