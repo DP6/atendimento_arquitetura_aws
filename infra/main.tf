@@ -29,17 +29,21 @@ resource "aws_sqs_queue" "tickets_queue" {
 resource "aws_sqs_queue_policy" "tickets_queue_policy" {
     queue_url = aws_sqs_queue.tickets_queue.id
     policy = <<POLICY
- 
-                {"Version": "2012-10-17",
+            {
+                "Version": "2012-10-17",
                 "Id": "zendesk-tickets-queue-policy",
-                "Statement":[
-                    {"Sid": "",
-                    "Effect": "Allow",
-                    "Action": "sqs:SendMessage",
-                    "Resource": "${aws_sqs_queue.tickets_queue.arn}",
-                    "Condition": 
-                        {"ArnEquals": 
-                            {"aws:SourceArn": "${aws_sns_topic.tickets.arn}"}
+                "Statement": [
+                    {
+                        "Sid": "Stmt1657056004073",
+                        "Effect": "Allow",
+                        "Action": "sqs:SendMessage",
+                        "Resource": "${aws_sqs_queue.tickets_queue.arn}",
+                        "Condition": {
+                            "ArnEquals": {
+                                "aws:SourceArn": "${aws_sns_topic.tickets.arn}"}
+                            },
+                        "Principal": {
+                            "AWS": ["688250552326"]
                         }
                     }
                 ]  
