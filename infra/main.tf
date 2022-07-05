@@ -34,15 +34,27 @@ resource "aws_sns_topic_subscription" "tickets_queue_to_topic" {
 # S3
 resource "aws_s3_bucket" "s3_bucket_raw"{
     bucket = "atendimento-tickets-raw"
-    acl = "private"
 }
 
 resource "aws_s3_bucket" "s3_bucket_processed"{
     bucket = "atendimento-tickets-processed"
-    acl = "private"
 }
 
 resource "aws_s3_bucket" "s3_bucket_curated"{
     bucket = "atendimento-tickets-curated"
+}
+
+resource "aws_s3_bucket_acl" "s3_bucket_raw_acl"{
+    bucket = aws_s3_bucket.s3_bucket_raw.id
+    acl = "private"
+}
+
+resource "aws_s3_bucket_acl" "s3_bucket_processed_acl"{
+    bucket = aws_s3_bucket.s3_bucket_processed.id
+    acl = "private"
+}
+
+resource "aws_s3_bucket_acl" "s3_bucket_curated_acl"{
+    bucket = aws_s3_bucket.s3_bucket_curated
     acl = "private"
 }
