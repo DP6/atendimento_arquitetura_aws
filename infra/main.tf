@@ -21,8 +21,31 @@ resource "aws_sns_topic" "tickets"{
 # SQS
 resource "aws_sqs_queue" "tickets_queue" {
     name = "zendesk-tickets-queue"
+    max_message_size          = 2048
+    visibility_timeout_seconds = 600
 }
 
+
+resource "aws_sqs_queue_policy" "tickets_queue_policy" {
+    queue_url = aws_sqs_queue.tickets_queue.id
+    policy = <<POLICY
+ 
+                {"Version": "2012-10-17",
+                "Id": "zendesk-tickets-queue-policy",
+                "Statement":[
+                    {"Sid": "",
+                    "Effect": "Allow",
+                    "Action": "sqs:SendMessage",
+                    "Resource": "${aws_sqs_queue.tickets_queue.arn}",
+                    "Condition": 
+                        {"ArnEquals": 
+                            {"aws:SourceArn": "${aws_sns_topic.tickets.arn}"}
+                        }
+                    }
+                ]  
+            }
+    POLICY
+}
 
 # SNS Subscription
 resource "aws_sns_topic_subscription" "tickets_queue_to_topic" {
