@@ -45,11 +45,23 @@ resource "aws_sqs_queue_policy" "tickets_queue_policy" {
                         "Principal": {
                             "AWS": ["688250552326"]
                         }
+                    },
+                    {
+                        "Sid": "Stmt1657112898138",
+                        "Action": [
+                            "sqs:ReceiveMessage"
+                        ],
+                        "Effect": "Allow",
+                        "Resource": "arn:aws:sqs:sa-east-1:688250552326:zendesk-tickets-queue",
+                        "Principal": {
+                            "AWS": ["688250552326"]
+                        }
                     }
                 ]  
             }
     POLICY
 }
+
 
 # SNS Subscription
 resource "aws_sns_topic_subscription" "tickets_queue_to_topic" {
