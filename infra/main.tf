@@ -38,12 +38,8 @@ resource "aws_sqs_queue_policy" "tickets_queue_policy" {
                         "Effect": "Allow",
                         "Action": "sqs:SendMessage",
                         "Resource": "${aws_sqs_queue.tickets_queue.arn}",
-                        "Condition": {
-                            "ArnEquals": {
-                                "aws:SourceArn": "${aws_sns_topic.tickets.arn}"}
-                            },
                         "Principal": {
-                            "AWS": ["688250552326"]
+                            "Service": "sns.amazonaws.com"
                         }
                     },
                     {
@@ -52,15 +48,21 @@ resource "aws_sqs_queue_policy" "tickets_queue_policy" {
                             "sqs:ReceiveMessage"
                         ],
                         "Effect": "Allow",
-                        "Resource": "arn:aws:sqs:sa-east-1:688250552326:zendesk-tickets-queue",
+                        "Resource": "${aws_sqs_queue.tickets_queue.arn}",
                         "Principal": {
-                            "AWS": ["688250552326"]
+                            "Service": "sns.amazonaws.com"
                         }
                     }
                 ]  
             }
     POLICY
 }
+
+
+                        # "Condition": {
+                        #     "ArnEquals": {
+                        #         "aws:SourceArn": "${aws_sns_topic.tickets.arn}"}
+                        #     },
 
 
 # SNS Subscription
